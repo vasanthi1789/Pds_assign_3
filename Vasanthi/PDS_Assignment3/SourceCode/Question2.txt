@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+
+# Set the seed for reproducibility
+np.random.seed(318)
+
+# Load the data
+data = pd.read_csv("/content/pds/diabetes.csv")
+
+# Randomly select 25 observations
+sample = data.sample(n=25, random_state=0)
+
+# Compute the 98th percentile of BMI for the sample and the population
+sample_percentile_bmi = np.percentile(sample['BMI'], 98)
+population_percentile_bmi = np.percentile(data['BMI'], 98)
+
+# Display the 98th percentile of BMI for the sample and the population
+print(f"Sample 98th Percentile BMI: {sample_percentile_bmi}")
+print(f"Population 98th Percentile BMI: {population_percentile_bmi}")
+
+# Plot the 98th percentile of BMI for the sample and the population
+fig, ax = plt.subplots()
+ax.hist(data['BMI'], bins=30, alpha=0.5, label='Population')
+ax.hist(sample['BMI'], bins=30, alpha=0.5, label='Sample')
+ax.axvline(x=sample_percentile_bmi, color='r', linestyle='--', label='Sample 98th Percentile')
+ax.axvline(x=population_percentile_bmi, color='g', linestyle='--', label='Population 98th Percentile')
+ax.set_xlabel('BMI')
+ax.set_ylabel('Frequency')
+ax.legend()
+plt.show()
+
